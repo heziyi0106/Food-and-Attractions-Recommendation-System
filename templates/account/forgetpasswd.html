@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% block title %}
+找回密碼
+{% endblock %}
+
+{% block banner %}
+</div>
+{% endblock %}
+
+{% block Content %}
+<style>
+.form-container {
+	margin: 0 auto;
+    margin-top:20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+}
+
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+	margin: 10px 0;
+	height: 40px;}
+</style>
+
+<div class="form-container">
+	<form id="resetForm" action="/account/forgetpasswd/" method="post">{% csrf_token %}
+		<h2>找回密碼</h2>
+		<input type="email" placeholder="註冊的電子郵件" name="sentEmail" required>
+		<input type="submit" class="reset-button" value="發送重置鏈接"></button>
+		<p><a href="/account/login">返回登入</a></p>
+		<p>{{status}}</p>
+	</form>
+</div>
+<div style="height: 40px;">
+</div>
+{% endblock %}

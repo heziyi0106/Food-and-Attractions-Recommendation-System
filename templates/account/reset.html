@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+{% block title %}
+Setting New Password
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+{% block Content %}
+<style>
+.form-container {
+	margin: 0 auto;
+    margin-top:20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+	margin: 10px 0;
+	height: 40px;
+}
+</style>
+
+<div class="form-container">
+	<form id="resetForm" action="/account/resetpasswd/" method="post" >{% csrf_token %}
+		<h2>設定新密碼</h2>
+		<input type="hidden" name="token" value="{{key}}">
+		<input type="password" placeholder="輸入新密碼" name="password" required>
+		<input type="password" placeholder="再次輸入密碼" name="checkpassword" required>
+		<input type="submit" class="new-passwd-button" value="確認"></button>
+		<p><a href="/account/login">返回登入</a></p>
+		<p>{{text}}</p>
+	</form>
+</div>
+<div style="height: 40px;">
+</div>
+{% endblock %}

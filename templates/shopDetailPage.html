@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block TitleName %}
+店家介紹
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+{% block Content %}
+<style>
+p.message_title{
+	color: black;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+p.message_content{
+	color: black;
+	margin-bottom: 5px;
+}
+
+p.no_message{
+	color: black;
+	font-size : 20px;
+}
+</style>
+
+
+<div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+        <h2 class="col-12 tm-text-primary">{{shopdata.shopName}}</h2>
+    </div>
+    <div class="row tm-mb-90">
+        <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
+            
+            {% comment %} 多圖處理 {% endcomment %}
+            {% load custom_filters %}
+            {% with shopdata.shopPhoto|split_by_space as shopPhoto %}
+                {% if shopPhoto %}
+                    <img src="/static/img/{{ shopPhoto.0 }}" alt="Image" class="img-fluid">
+                {% endif %}
+            {% endwith %}
+
+            <form class="d-flex tm-search-form mt-3 mb-3" action='/message/' method="post">
+                {% csrf_token %}
+                <textarea rows="1" minlength="30" name="message" class="form-control rounded-0" placeholder="留言區" required></textarea>
+                <button class="btn btn-outline-success tm-search-btn" type="submit">留言</i>
+                </button>
+            </form>
+            <div class="tm-bg-gray p-3" style="height: 300px; overflow: auto;">  <!--留言紀錄-->
+				{% if messages %}
+					{% for message in messages %}
+						<p class="message_title">{{message.user.username}}/{{message.updated_at}}：</p>
+						<p class="message_content">{{message.content}}</p><hr/><br/>
+					{% endfor %}
+				{% else %}
+					<p class="no_message">尚未有人留言</p>
+				{% endif %}
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+            <div class="tm-bg-gray tm-video-details">
+                <div class="mb-4">
+                    <h3 class="tm-text-gray-dark mb-3">資訊</h3>
+                    <p class="tm-text-gray-dark mb-2">
+                        店家地址：<span class="tm-text-primary">{{shopdata.shopAddress}}</span>
+                    </p>
+                    <p class="tm-text-gray-dark mb-2">
+                        店家電話：<span class="tm-text-primary">{{shopdata.shopPhone}}</span>
+                    </p>
+                    <p class="tm-text-gray-dark mb-2">
+                        營業時間：<span class="tm-text-primary">{{shopdata.shopHours}}</span>
+                    </p>
+                </div>
+                <div>
+                    <h3 class="tm-text-gray-dark mb-3">關鍵字</h3>
+                    {% load custom_filters %}
+                    {% with shopkeywords.keyWords as keywords %}
+                    {% for key in keywords|split_string %}
+                        <a href="/RecommenderSystem/?page={{paginater.num_pages}}&search={{key}}" class="tm-text-primary mr-4 mb-2 d-inline-block">{{key}}</a>
+                    {% endfor %}
+                    {% endwith %}
+
+                    {% for key in shopkeywords.contentGroupKeys|split_list %}
+                    {% if key %}
+                        <a href="/RecommenderSystem/?page={{paginater.num_pages}}&search={{key}}" class="tm-text-primary mr-4 mb-2 d-inline-block">{{key}}</a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <br/>
+                <div>
+                    <h3 class="tm-text-gray-dark mb-3">地圖</h3>
+                    <!--崁入我的地圖(路線)-->
+					<iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBrELNAxCfKypEC_aiTltL1ZtJ-IknJjXc&maptype=satellite&q={{shopdata.shopName}}" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+				</div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <h2 class="col-12 tm-text-primary">
+            相似店家推薦
+        </h2>
+    </div>
+    <div class="row mb-3 tm-gallery">
+
+    {% for shop in similar_shops_data %}
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+            <figure class="effect-ming tm-video-item">
+                {% comment %} 多圖處理 {% endcomment %}
+                {% load custom_filters %}
+                {% with shop.shopPhoto|split_by_space as shopPhoto %}
+                    {% if shopPhoto %}
+                <img src="/static/img/{{ shopPhoto.0 }}" alt="Image" class="img-fluid">
+                {% endif %}
+                {% endwith %}
+                <figcaption class="d-flex align-items-center justify-content-center">
+                    <h2>了解細節</h2>
+                    <a href="/RecommenderSystem/shopdetail/{{shop.id}}">查看更多</a>
+                </figcaption>
+            </figure>
+            <div class="d-flex justify-content-between tm-text-gray">
+                <span style="color:#5b5b5b;weight:bold">{{shop.shopName}}</span>
+            </div>
+        </div>
+    {% endfor %}
+    </div> <!-- row -->
+</div> <!-- container-fluid, tm-container-content -->
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html'%}
+{% block title %}
+帳號註冊
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+{% block Content %}
+
+<style>
+
+.form-container {
+	margin: 0 auto;
+    margin-top:20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+}
+
+input[type="text"], input[type="password"], input[type="email"]{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="date"]{
+    width: 216px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+	margin: 10px 0;
+	height: 40px;}
+
+</style>
+
+
+<div class="form-container">
+    <form id="siginForm" action="/account/register/" method="post">{% csrf_token %}
+        <h2>帳號註冊</h2>
+        <input type="text" placeholder="帳號" name="account" value="{{account}}" required>
+
+		{% if userreuse == 1 %}
+			<div class="error-hidden" style="color: red;">帳號已存在</div>
+			<style>
+			input[name="account"]{background-color:#FFA2A2;}
+			</style>
+		{% endif %}
+
+        <input type="password" placeholder="密碼" name="password" required>
+
+		{% if password == 1 %}
+			<div class="error-hidden" style="color: red;">密碼不一致</div>
+			<style>
+			input[name="password"], input[name="confirm_password"]{background-color:#FFA2A2;}
+			</style>
+		{% endif %}
+
+		<input type="password" placeholder="再次確認" name="confirm_password" required>
+		<input type="text" placeholder="暱稱" name="username" value="{{username}}" required>
+        性別： <input type="radio" id="option1" name="gender" value="F" {{female}} required><label for="option1" >女</label>
+		<input type="radio" id="option2" name="gender" value="M" {{male}} ><label for="option2">男</label>
+		<input type="radio" id="option3" name="gender" value="O" {{other}} ><label for="option3">其他</label>
+		<input type="email" placeholder="電子郵件" name="email" value="{{email}}" required>
+
+		{% if emailreuse == 1 %}
+			<div class="error-hidden" style="color: red;">信箱已存在</div>
+			<style>
+			input[name="email"]{background-color:#FFA2A2;}
+			</style>
+		{% endif %}
+
+		<input type="text" placeholder="電話" name="phone" value="{{phone}}" required>
+
+		{% if phonereuse == 1 %}
+			<div class="error-hidden" style="color: red;">電話已存在</div>
+			<style>
+			input[name="phone"]{background-color:#FFA2A2;}
+			</style>
+		{% endif %}
+
+		<label>生日：<input type="date" placeholder="生日" name="birthday" value="{{birthday}}" required</label>
+        <input type="submit" class="register-button" value="註冊">
+        <p>已經有帳號了？<a href="/account/login">登入</a></p>
+    </form>
+</div>
+<div style="height: 40px;">
+</div>
+
+
+
+
+
+{% endblock %}

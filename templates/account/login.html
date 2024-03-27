@@ -1,0 +1,54 @@
+{% extends 'base.html'%}
+{% block title %}
+用戶登入
+{% endblock %}
+
+{% block banner %}
+</div>
+{% endblock %}
+
+{% block Content %}
+
+<style>
+.form-container {
+	margin: 0 auto;
+    margin-top:20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+	margin: 10px 0;
+	height: 40px;
+}
+</style>
+
+<div class="form-container">
+
+    <form id="loginForm" action="/account/login/" method="post">{% csrf_token %}
+        <h2>帳號</h2>
+        <input type="text" placeholder="帳號" name="useraccount" required>
+        <input type="password" placeholder="密碼" name="userpassword" required>
+        <input type="submit" class="login-button" value="登入"></button>
+        <p>沒有帳號？<a href="/account/register">註冊</a></p>
+        <p><a href="/account/forgetpasswd">忘記密碼？</a></p>
+        <p id="login-error">{{login}}</td>
+    </form>
+
+</div>
+<div style="height: 40px;">
+</div>
+{% endblock %}

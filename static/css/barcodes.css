@@ -1,0 +1,30 @@
+.custom-button {
+    max-width: 60%;
+    /* 設置按鈕的最大寬度 */
+    display: inline-block;
+    /* 將按鈕設置為行內塊元素 */
+    white-space: nowrap;
+    /* 禁止文字換行 */
+    overflow: hidden;
+    /* 溢出部分隱藏 */
+    text-overflow: ellipsis;
+    /* 文字溢出時顯示省略號 */
+    padding: 2px;
+    /* 將 padding 設置為零 */
+    font-size: 12px;
+    /* 调整为您想要的字体大小 */
+    word-wrap: break-word;
+    /* 允许长单词和 URL 换行 */
+    white-space: normal;
+    /* 设置为 normal 允许文本自动换行 */
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+#resultDisplay {
+    margin-left: 10px;
+    /* 調整間距，視情況而定 */
+}

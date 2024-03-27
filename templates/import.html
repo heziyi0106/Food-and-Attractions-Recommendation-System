@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block TitleName %}
+匯入CSV
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+{% block Content %}
+
+<style>
+    .form-container {
+        margin: 0 auto;
+        margin-top:20px;
+        margin-bottom:20px;
+        background: white;
+        padding: 20px 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        width: 300px;
+    }
+</style>
+
+<div class="form-container">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Import CSV</button>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static%}
+
+{% block TitleName %}
+折價券庫
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+
+{% block Content %}
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+  使用狀況
+</button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item custom-dropdown-item" href="/barcode/delay/" data-value="delay">已過期</a>
+    <a class="dropdown-item custom-dropdown-item" href="/barcode/" data-value="unused">未使用</a>
+    <a class="dropdown-item custom-dropdown-item" href="/barcode/used/" data-value="used">已使用</a>
+  </div>
+  <img id="barcodeImage" class="img-fluid" src="{% static 'img/barcode/barcode.png' %}" alt="圖片顯示不出來">
+  <div>已過期的折價券有{{count}}張</div>
+<table class="table table-dark">
+  <thead> 
+    <tr> 
+        <th scope="row">兌換商店</th>
+        {% for shop in shop_all %}
+        <th scope="col">{{ shop.store_name }}</th>
+        {% endfor %}
+    </tr>
+  </thead>
+  
+  <tbody>
+    {% for barcode in df_trans.values %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          {% for b in barcode %}
+            <td>
+                {% if b and b.barcode_img0 %}
+                  <button type="button" class="btn btn-primary custom-button" data-barcode-img="{% static 'img/barcode/' %}{{b.barcode_img0}}">
+                    {{ b.face_price }}元</button>
+                  
+                {% endif %}
+              {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+<link rel="stylesheet" type="text/css" href="{% static 'css/barcodes.css' %}"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'js/barcodes.js' %}"></script>
+
+{% endblock %}

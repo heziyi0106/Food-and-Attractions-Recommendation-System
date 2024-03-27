@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Test</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-TQK7vNLnJ2XyCu+bfQ/Qmw0G8wHcg9cfNlVCdrJO+YqsDzlnO6Vy8h3pK3zcD0zR" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="tab" type="0" href="#store" role="tab" aria-controls="store" aria-selected="true">店家列表</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-bs-toggle="tab" type="1" href="#attraction" role="tab" aria-controls="attraction" aria-selected="false">景點列表</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="store" role="tabpanel" aria-labelledby="store-tab">
+            <h3>店家列表內容</h3>
+        </div>
+        <div class="tab-pane fade" id="attraction" role="tabpanel" aria-labelledby="attraction-tab">
+            <h3>景點列表內容</h3>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-PxxI5Fq82UKlg7NZX0uMR23Cq3ZPwl0yvjJSm9zLkpdjwn8mQsPsrY9FgiMhXfDj" crossorigin="anonymous"></script>
+
+<!-- Your custom JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 監聽頁籤點擊事件
+    document.querySelectorAll('.nav-link').forEach(function(tab) {
+        tab.addEventListener('click', function(event) {
+            event.preventDefault(); // 阻止默認行為
+
+            var typeNumber = this.getAttribute('type'); // 獲取頁籤中的 typeNumber
+            console.log('Type:', typeNumber);
+
+            // 這裡可以添加 AJAX 請求的邏輯，根據 typeNumber 發送不同的請求
+        });
+    });
+});
+</script>
+
+</body>
+</html>

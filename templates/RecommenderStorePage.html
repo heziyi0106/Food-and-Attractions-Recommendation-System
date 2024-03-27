@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block TitleName %}
+推薦店家
+{% endblock %}
+
+{% block banner %}
+<style>
+    .tm-search-input, .tm-search-btn {
+        height: 55px; /* 調整為您希望的高度 */
+    }
+</style>
+<form class="d-flex tm-search-form" action="" method="get">
+    <input class="form-control tm-search-input" type="text" placeholder="關鍵字：行政區、小吃、景點" aria-label="Search" name="search" >
+    <button class="btn btn-outline-success tm-search-btn" type="submit">
+        <i class="fas fa-search"></i>
+    </button>
+</form>
+{% endblock %}
+{% block Content %}
+<div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item this-nav" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="tab" href="?page=&search={{searchText}}&type=0" role="tab" aria-controls="store" aria-selected="true" onclick="changeTab(0)">店家列表</a>
+                </li>
+                <li class="nav-item this-nav" role="presentation">
+                    <a class="nav-link" data-bs-toggle="tab" href="?page=&search={{searchText}}&type=1" role="tab" aria-controls="attraction" aria-selected="false" onclick="changeTab(1)">景點列表</a>
+                </li>
+                <li class="nav-item ml-auto d-flex align-items-center" role="presentation">
+                    <form action="" class="tm-text-primary" method="get">
+                        {% if searchText %}
+                            <input type="hidden" name="search" value="{{ searchText }}">
+                        {% endif %}
+                        {% if typeNumber %}
+                            <input type="hidden" name="type" value="{{ typeNumber }}">
+                        {% endif %}
+                        {% for num in data.paginator.page_range %}
+                            {% if num == data.number %}
+                                頁數 <input type="text" value="{{ num }}" name="page" class="tm-input-paging tm-text-primary"> / {{ paginater.num_pages }}
+                            {% endif %}
+                        {% endfor %}
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        function changeTab(tabIndex) {
+            // 獲取所有頁籤
+            var tabs = document.querySelectorAll('.this-nav .nav-link');
+        
+            // 移除所有頁籤的 active 類
+            tabs.forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+        
+            // 將被點擊的頁籤設置為 active
+            tabs[tabIndex].classList.add('active');
+        }
+        
+    
+        // 頁面加載完畢後，保持被選定頁籤的樣式
+        document.addEventListener('DOMContentLoaded', function() {
+            // 獲取當前頁面的URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var type = urlParams.get('type');
+        
+            // 如果URL中包含type參數
+            if (type !== null) {
+                // 獲取所有頁籤
+                var tabs = document.querySelectorAll('.this-nav .nav-link');
+        
+                // 移除所有頁籤的 active 類
+                tabs.forEach(function(tab) {
+                    tab.classList.remove('active');
+                });
+        
+                // 根據type設置相應的頁籤為 active
+                if (type === '0') {
+                    tabs[0].classList.add('active'); // 店家列表頁籤
+                } else if (type === '1') {
+                    tabs[1].classList.add('active'); // 景點列表頁籤
+                }
+            }
+        });
+        
+    
+        /*// 在滑鼠停留在頁籤上時，保持該頁籤的樣式
+        document.querySelectorAll('.this-nav .nav-link').forEach(function(tab, index) {
+            tab.addEventListener('mouseenter', function() {
+                changeTab(index);
+            });
+        });*/
+    </script>
+    
+
+    <div class="row tm-mb-90 tm-gallery">
+        {% for row in data %}
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+            <figure class="effect-ming tm-video-item">
+
+                {% comment %} 多圖處理 {% endcomment %}
+                {% load custom_filters %}
+                {% with row.shopPhoto|split_by_space as shopPhoto %}
+                    {% if shopPhoto %}
+                        <img src="/static/img/{{ shopPhoto.0 }}" alt="Image" class="img-fluid">
+                    {% endif %}
+                {% endwith %}
+                {% comment %} <img src="/static/img/{{row.shopPhoto}}" alt="Image" class="img-fluid"> {% endcomment %}
+
+                <figcaption class="d-flex align-items-center justify-content-center">
+                    <h2>了解細節</h2>
+                    <a href="/RecommenderSystem/shopdetail/{{row.id}}">查看更多</a>
+                </figcaption>
+            </figure>
+            <div class="d-flex justify-content-between tm-text-gray">
+                <span style="color:#5b5b5b;weight:bold">{{row.shopName}}</span>
+            </div>
+            <hr/>
+			{% for key,value in unique_messages.items %}
+				{% if key == row.id %}
+					<span class="tm-text-gray" style="font-size:0.75rem">最新留言時間：{{ value }}</span>
+				{% endif %}
+			{% endfor %}
+        </div>
+        {% endfor %}
+    </div> <!-- row -->
+
+    <div class="row tm-mb-90">
+        <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">
+
+            <a href="?page=1&search={{searchText}}&type={{typeNumber}}" class="btn btn-primary tm-btn-prev mb-2">第一頁</a>
+
+            <div class="tm-paging d-flex">
+                {% for foo in page_range %}
+                    {% if page == foo %}
+                        <a href="?page={{ foo }}&search={{searchText}}&type={{typeNumber}}" class="active tm-paging-link">{{ foo }}</a>
+                    {% else %}
+                        <a href="?page={{ foo }}&search={{searchText}}&type={{typeNumber}}" class="tm-paging-link">{{ foo }}</a>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+            <a href="?page={{paginater.num_pages}}&search={{searchText}}&type={{typeNumber}}" class="btn btn-primary tm-btn-next">最後一頁</a>
+        </div>
+    </div>
+    
+</div> <!-- container-fluid, tm-container-content -->
+
+
+{% endblock %}

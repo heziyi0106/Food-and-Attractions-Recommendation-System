@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static%}
+
+{% block TitleName %}
+我在雙北 天氣晴
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+
+{% block Content %}
+<div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+        <!--<h2 class="col-6 tm-text-primary">
+            店家瀏覽
+        </h2>-->
+        <div class="slick-track">
+            {% for shop_data in random_twelve_values %}
+                    <div>
+                        <h3  class = "shopnameaddress-text">{{shop_data.shopName}}</h3>
+                        <li class = "shopnameaddress-text">{{shop_data.shopAddress}}</li>
+                        {% comment %} {% for comment in comments%}
+                            {% if comment.page ==  shop_data.id %}
+                                <div class="center-text"> {% endcomment %}
+                                    {% comment %} <p class="responsive-text">{{comment.content}}</p> {% endcomment %}
+                                {% comment %} </div> {% endcomment %}
+                            {% comment %} {% endif %} {% endcomment %}
+                        {% comment %} {% endfor %} {% endcomment %}
+                <img src="{% static 'img/'|add:shop_data.shopPhoto %}" alt="Image error">
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/slick/slick.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/slick/slick-theme.css' %}"/>
+        <script type="text/javascript" src="{% static 'css/slick/slick.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'css/slick/slick.js' %}"></script>
+    </div>
+
+</div> <!-- container-fluid, tm-container-content -->
+
+
+{% endblock %}

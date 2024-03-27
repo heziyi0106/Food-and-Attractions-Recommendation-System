@@ -1,0 +1,171 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title %}
+會員管理
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+
+{% block Content %}
+
+<style>
+.grid-container {
+  display: grid;
+  gap: 10px;  /*格子與格子中間的線*/
+  /*background-color: #2196F3;*/ /*顯示格子用*/
+  padding: 10px;  /*最外框與所有內框的距離*/
+}
+.grid-item {
+  /*background-color: rgba(255, 255, 255, 0.8);*/ /*顯示格子用*/
+  text-align: center;
+  /*padding: 10px;*/  /* 內框與內框顯示的文字的距離 */
+  align-content: center;
+  height: 100%;
+}
+
+.item1 {
+  grid-column: 1;
+  grid-row: 1 / span 1;  /* row=行的第一個 span=要往下合併幾個 */
+}
+
+.item2 {
+  grid-column: 2;
+  grid-row: 1 / span 2;  /* row=行的第一個 span=要往下合併幾個 */
+}
+
+.item3 {
+  grid-column: 1;
+  grid-row: 2 / span 1;  /* row=行的第一個 span=要往下合併幾個 */
+}
+
+.item4 {
+  grid-column: 1;
+  grid-row: 3 / span 1;  /* row=行的第一個 span=要往下合併幾個 */
+}
+
+.item5 {
+  margin-left: 140px;
+  text-align: left;
+  grid-column: 2;
+  grid-row: 3 / span 1;  /* row=行的第一個 span=要往下合併幾個 */
+}
+
+.donut-chart-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+.donut {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.donut-ring {
+    stroke-width: 6;
+}
+
+.donut-segment {
+    stroke-width: 6;
+    stroke-dasharray: 25 75; 
+ stroke: #008888;
+    transition: stroke-dasharray 0.3s;
+}
+
+.donut-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; 
+    text-align: center; 
+}
+
+.donut-text h3 h4 {
+    margin: 0;
+    white-space: normal;
+    word-break: break-word;
+}
+#barcodeImage {
+
+    width: 400px; /* 調整圖片寬度 */
+    height: 95px; /* 調整圖片高度 */
+    margin-left: -150px; /* 添加左邊距，根據需要調整數值 */
+  }
+
+.custom-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #EEEEEE;
+    color: black;
+}
+
+</style>
+
+<div class="grid-container">
+ <div class="grid-item item1">
+  <h3>留言數</h3>
+  <h1><a href="/manage/message_details">{{message}}</a></h1>
+ </div>
+
+ <div class="donut-chart-container grid-item item2">
+        <svg width="400" height="400" viewBox="0 0 42 42" class="donut">
+            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle>
+            <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ce4b99" stroke-width="3" stroke-dasharray="60 40" stroke-dashoffset="25"></circle>
+        </svg>
+        <div class="donut-text">
+            <h3>目前已累積</h3>
+   <h3><a href="/manage/point_details">{{havepoint}}點</a></h3>
+   <h4>今日還可獲得 {{todaypoint}} 點</h4>
+        </div>
+    </div>
+
+ {% if havepoint >= 2 %}
+ <div class="grid-item item5">
+  <form action="/manage/" method="post">{% csrf_token %}
+      <!--<a href="/manage/protduce/" class="custom-button">抽折價券</a>-->
+   <button class="custom-button">抽折價券</button><br>
+    {% if bar %}
+      <img id="barcodeImage" class="img-fluid" src="{% static 'img/barcode/' %}{{bar}}" alt="條碼顯示區">
+    {% else %}  
+      <img id="barcodeImage" class="img-fluid" src="{% static 'img/barcode/barcode.png' %}" alt="條碼顯示區">
+    {% endif %}
+  </form>
+ </div>
+ {% endif %}
+ 
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const radius = 15.91549430918954;
+    const circumference = 2 * Math.PI * radius;
+
+    let number = {{havepoint}}; 
+ let effectiveNumber = number > 30 ? 30 : number; 
+    let percent = effectiveNumber / 30; 
+
+    const donutSegment = document.querySelector('.donut-segment');
+
+    const filledLength = percent * circumference;
+    donutSegment.style.strokeDasharray = `${filledLength} ${circumference - filledLength}`;
+});
+</script>
+
+{% endblock %}

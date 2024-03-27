@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block TitleName %}我在雙北 天氣晴{% endblock %}</title>
+    <link rel="shortcut icon" href="/static/img/eyes.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/templatemo-style.css">
+
+
+</head>
+<body>
+    <!-- 導覽列 -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-film mr-2"></i>
+                我在雙北 天氣晴
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-1 " aria-current="page" href="/RecommenderSystem/?page=&search=&type=0">推薦店家</a>
+                </li>
+                <li class="nav-item dropdown"> 
+                    <a class="nav-link nav-link-3 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        會員管理
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/account/fix/">修改個人資料</a>
+                        <a class="dropdown-item" href="/manage/">查看我的成就</a>
+                        <a class="dropdown-item" href="/manage/message_details/">查看所有留言</a>
+                        <a class="dropdown-item" href="/barcode">折價券庫</a>
+                    </div>
+                </li>
+                {% if request.session.name != None %}
+                <li class="nav-item">
+                    <a class="nav-link nav-link-5" href="/account/logout/">登出</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link nav-link-6" href="/account/login/">登入</a>  <!-- 登入登出註冊 -->
+                </li>
+                {% endif %}
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--banner-->
+    
+    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="/static/img/clouds2.jpg">
+    {% block banner %}
+    {% endblock %}
+    </div>
+
+    <!--Content-->
+    {% block Content %}
+    {% endblock%}
+
+    <!--footer-->
+    <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
+        <div class="container-fluid tm-container-small">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-12 px-4 mb-4">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">關於我們</h3>
+                    <p>本網站志在提供推薦雙北地區的熱門美食景點地標，使用本網站你能看到非常公正有誠意的建議，還能透過留言分享的方式跟大家互動，為自己賺取折價券。</p>
+
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-3 mb-4">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">網站導覽</h3>
+                    <ul class="tm-footer-links pl-0">
+                        <li><a href="/RecommenderSystem/?page=1&search=&type=0">推薦店家</a></li>
+                        <li><a href="/manage/">會員管理</a></li>
+                        {% comment %} <li><a href="/account/register/">註冊</a></li> {% endcomment %}
+                        <li class="mb-2 "><a href="https://line.me/R/ti/p/@999gtzba"><img src='/static/img/line.svg'
+                            onmouseover="this.src='/img/line_green.svg';"
+                            onmouseout="this.src='/static/img/line.svg';" /> LineBot</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-1 mb-4">
+                    <form id="contact-form" action="/message/messageReport/" method="POST" class="tm-contact-form mx-auto">{% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" name="asktitle" class="form-control rounded-0" placeholder="標題" required />
+                        </div>
+                        <!--<div class="form-group">
+                            <input type="email" name="asktitle" class="form-control rounded-0" placeholder="官方email" required />
+                        </div>-->
+                        <div class="form-group">
+                            <textarea rows="6" name="message" class="form-control rounded-0" placeholder="內容" required=></textarea>
+                        </div>
+
+                        <div class="form-group tm-text-right">
+                            <button type="submit" class="btn btn-primary">送出</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-12 px-5 mb-3">
+                    Copyright 2024 智聯專班第五組 All rights reserved.
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 px-5 text-right">
+                    Designed by <a href="https://templatemo.com" class="tm-text-gray" rel="sponsored" target="_parent">智聯專班第五組</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/plugins.js"></script>
+    <script>
+        $(window).on("load", function() {
+            $('body').addClass('loaded');
+        });
+
+        var currentURL = window.location.pathname;
+
+        var navLinks = document.querySelectorAll('.nav-link');
+
+        for (var i = 0; i < navLinks.length; i++) {
+            var link = navLinks[i];
+            
+            if (link.getAttribute('href') === currentURL) {
+                link.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
